@@ -23,6 +23,8 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }//注意!!! RxCache 是托管于 jitpack 仓库的, 如果没有这一段代码将永远依赖不了 RxCache
+        //Bmob的maven仓库地址--必填
+        maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
     }
 }
 

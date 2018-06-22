@@ -8,4 +8,6 @@ package com.gzucm.mnews.mvp.model.api;
 public interface Api {
 
     String APP_DOMAIN = "https://news-at.zhihu.com/api/4/";
+//    String BASE_URL = "https://api.bmob.cn/1/classes/";
+
 }
