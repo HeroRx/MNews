@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_news"
+        icon="@drawable/news"
+        title="@string/news" />
+    <tab
+        id="@+id/tab_sort"
+        icon="@drawable/sort"
+        title="@string/sort" />
+
+    <tab
+        id="@+id/tab_theme"
+        icon="@drawable/theme"
+        title="@string/theme" />
+    <tab
+        id="@+id/tab_my"
+        icon="@drawable/my"
+        title="@string/my" />
+
+</tabs>
