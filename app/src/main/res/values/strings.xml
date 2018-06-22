@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MNews</string>
+    <string name="news">新闻</string>
+    <string name="sort">分类</string>
+    <string name="theme">主题</string>
+    <string name="my">我的</string>
 </resources>

@@ -58,4 +58,9 @@ dependencies {
     //引用JessYanCoding开源框架
     //使用文档https://github.com/JessYanCoding/MVPArms/wiki
     implementation 'me.jessyan:arms:2.4.1' //使用Rxjava2, 已兼容 AndroidStudio v3.0 以及 Gradle Plugin v3.0
+    //底部栏
+    implementation 'com.roughike:bottom-bar:2.3.1'
+    //blankj工具包
+    implementation 'com.blankj:utilcode:1.17.0'
+
 }
