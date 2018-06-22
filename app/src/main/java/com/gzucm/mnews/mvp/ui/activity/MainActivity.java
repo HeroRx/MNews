@@ -157,4 +157,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void killMyself() {
         finish();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        this.mTitles = null;
+        this.mFragments = null;
+        this.mNavIds = null;
+    }
 }
