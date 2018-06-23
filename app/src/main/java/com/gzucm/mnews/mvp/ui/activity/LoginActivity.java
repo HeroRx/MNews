@@ -4,29 +4,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import com.jess.arms.base.BaseActivity;
-import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.utils.ArmsUtils;
-
+import com.blankj.utilcode.util.EncryptUtils;
+import com.gzucm.mnews.R;
 import com.gzucm.mnews.di.component.DaggerLoginComponent;
 import com.gzucm.mnews.di.module.LoginModule;
 import com.gzucm.mnews.mvp.contract.LoginContract;
 import com.gzucm.mnews.mvp.presenter.LoginPresenter;
-
-import com.gzucm.mnews.R;
-
+import com.jess.arms.base.BaseActivity;
+import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.ArmsUtils;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.View {
 
-    @BindView(R.id.tv_login)
-    TextView tv;
+    @BindView(R.id.et_user)
+    EditText usernameEt;
+    @BindView(R.id.et_psw)
+    EditText passwordEt;
+
+    @BindView(R.id.btn_login)
+    Button login;
+
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
         DaggerLoginComponent //如找不到该类,请编译一下项目
@@ -44,7 +51,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        tv.setText("hh");
+
     }
 
     @Override
@@ -72,5 +79,26 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     public void killMyself() {
         finish();
+    }
+
+    @OnClick(R.id.btn_login)
+    void login(){
+        String username = usernameEt.getText().toString().trim();
+        String password = passwordEt.getText().toString().trim();
+        String md5 = EncryptUtils.encryptMD5ToString(password);
+        mPresenter.login(username, md5);
+    }
+
+
+    @Override
+    public void loginFailed() {
+        Toast.makeText(LoginActivity.this, "用户名或者密码错误", Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public void loginSuccess() {
+
+        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
     }
 }

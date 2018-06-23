@@ -21,6 +21,11 @@ public class User extends BmobUser{
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     @Override
     public String getUsername() {
         return username;

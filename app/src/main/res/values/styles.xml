@@ -8,4 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="loginEditText">
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginStart">40dp</item>
+        <item name="android:layout_marginEnd">40dp</item>
+        <item name="android:textColor">@color/white_d_d_d</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColorHint">@color/white_d_d</item>
+    </style>
+
+
 </resources>

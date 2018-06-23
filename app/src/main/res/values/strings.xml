@@ -1,7 +1,21 @@
 <resources>
     <string name="app_name">MNews</string>
+
+    <!-- 底部导航栏 -->
     <string name="news">新闻</string>
     <string name="sort">分类</string>
     <string name="theme">主题</string>
     <string name="my">我的</string>
+
+    <!-- login -->
+    <string name="user_hint"> 请输入用户名</string>
+    <string name="password_hint">请输入密码</string>
+    <string name="code_hint">请输入验证码</string>
+    <string name="get_code">获取验证码</string>
+    <string name="login">登录</string>
+    <string name="third_login">第三方登录</string>
+
+    <string name="register">还未注册</string>
+    <string name="forget_psw">忘记密码？</string>
+
 </resources>

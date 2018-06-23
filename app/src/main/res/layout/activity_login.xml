@@ -1,13 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
 
-    <TextView
-        android:id="@+id/tv_login"
-        android:text="你好"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_app"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/et_user"
+            style="@style/loginEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/account"
+            android:focusable="auto"
+            android:hint="@string/user_hint"
+            tools:ignore="RtlCompat" />
+
+        <View
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
+            android:background="@color/white_d_d"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+        <EditText
+            android:id="@+id/et_psw"
+            style="@style/loginEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/identify"
+            android:focusable="auto"
+            android:hint="@string/password_hint"
+            tools:ignore="RtlCompat" />
+
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/login_btn_drawable"
+            android:text="@string/login"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textColor="@color/white_d_d"
+                android:id="@+id/tv_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/register"
+                android:textSize="10sp" />
+            <TextView
+                android:textColor="@color/white_d_d"
+                android:layout_weight="1"
+                android:id="@+id/tv_forget_psw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="@string/forget_psw"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="30dp"
+                android:layout_marginStart="30dp"
+                android:background="@color/white_d_d" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="13dp"
+                android:text="@string/third_login"
+                android:textColor="@color/white_d_d" />
+
+
+        </FrameLayout>
+
+        <LinearLayout
+
+            android:layout_marginBottom="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageButton
+
+                android:id="@+id/btn_qq_login"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/qq_login" />
+
+            <View
+                android:layout_width="80dp"
+                android:layout_height="match_parent"/>
+            <ImageButton
+                android:id="@+id/btn_wx_login"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/wx_login" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
