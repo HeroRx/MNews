@@ -81,6 +81,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         finish();
     }
 
+    @OnClick(R.id.tv_register)
+    void register(){
+        Toast.makeText(LoginActivity.this, "注册", Toast.LENGTH_SHORT).show();
+        ArmsUtils.startActivity(RegisterActivity.class);
+    }
     @OnClick(R.id.btn_login)
     void login(){
         String username = usernameEt.getText().toString().trim();

@@ -4,7 +4,8 @@ import android.app.Application;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.gzucm.mnews.mvp.contract.LoginContract;
+import com.gzucm.mnews.mvp.contract.RegisterContract;
+import com.gzucm.mnews.mvp.model.entity.BmobEntity.User;
 import com.gzucm.mnews.mvp.model.entity.UserEntity;
 import com.gzucm.mnews.mvp.ui.activity.MainActivity;
 import com.jess.arms.di.scope.ActivityScope;
@@ -28,7 +29,7 @@ import retrofit2.HttpException;
 
 
 @ActivityScope
-public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginContract.View> {
+public class RegisterPresenter extends BasePresenter<RegisterContract.Model, RegisterContract.View> {
     @Inject
     RxErrorHandler mErrorHandler;
     @Inject
@@ -38,9 +39,9 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
     @Inject
     AppManager mAppManager;
 
-    UserEntity mUserEntity = new UserEntity();
+    private UserEntity mUserEntity;
     @Inject
-    public LoginPresenter(LoginContract.Model model, LoginContract.View rootView) {
+    public RegisterPresenter(RegisterContract.Model model, RegisterContract.View rootView) {
         super(model, rootView);
     }
 
@@ -53,8 +54,52 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
         this.mApplication = null;
     }
 
-    public void login(String username,String password){
-        mModel.loginByAccount(username,password)
+    public void register(User user){
+        mModel.registerByAccount(user)
+                .subscribeOn(Schedulers.io())
+//                .retryWhen(new RetryWithDelay(3, 2))
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))//使用Rxlifecycle,使Disposable和Activity一起销毁
+                .subscribe(new ErrorHandleSubscriber<UserEntity>(mErrorHandler) {
+                    @Override
+                    public void onNext(@NonNull UserEntity userEntity) {
+                        mUserEntity = userEntity;
+                        Log.i("MNews",""+userEntity.getSessionToken() + "ma" + userEntity.getStatus());
+                        if (userEntity != null){
+                            mRootView.registerSuccess();
+                        }
+
+                        //自动登录
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        //t里面携带异常的响应体
+                        if(t instanceof HttpException){
+                            ResponseBody body = ((HttpException) t).response().errorBody();
+                            try {
+                                String response = body.string();
+                                Gson gson = new Gson();
+                                UserEntity userEntity = gson.fromJson(response,UserEntity.class);
+                                Log.i("MNews",""+response);
+                                if (userEntity.getCode() == 202){
+                                    mRootView.registerFailedByAccountExist();
+                                }else if (userEntity.getCode() == 209){
+                                    mRootView.registerFaildeByPhoneExist();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void autoLogin(String username,String password){
+        mModel.autologinByAccount(username,password)
                 .subscribeOn(Schedulers.io())
 //                .retryWhen(new RetryWithDelay(3, 2))
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -65,7 +110,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                     public void onNext(@NonNull UserEntity userEntity) {
                         mUserEntity = userEntity;
                         if (userEntity != null){
-                            mRootView.loginSuccess();
+                            mRootView.autoLoginSuccess();
                         }
                         Log.i("MNews",""+userEntity.getSessionToken() + "ma" + userEntity.getStatus());
                         ArmsUtils.startActivity(MainActivity.class);
@@ -83,20 +128,12 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                                 UserEntity userEntity = gson.fromJson(response,UserEntity.class);
                                 Log.i("MNews",""+response);
                                 if (userEntity.getCode() == 101){
-                                    mRootView.loginFailed();
+                                    mRootView.autoLoginFailed();
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
-//                        HttpException exception = (HttpException)t;
-//                        String message = exception.response().message();
-//                        UserEntity userEntity = (UserEntity) ((HttpException) t).response().body();
-//                        int code = exception.response().code();
-//                        if (code == 400){
-//                            mRootView.loginFailed();
-//                        }
-
                     }
                 });
     }

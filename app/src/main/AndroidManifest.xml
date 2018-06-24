@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.gzucm.mnews">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,16 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
 
-
         <!-- arms配置 -->
         <meta-data
             android:name="com.gzucm.mnews.app.GlobalConfiguration"
             android:value="ConfigModule" />
 
-        <activity android:name="com.gzucm.mnews.mvp.ui.activity.MainActivity">
-
-        </activity>
-
+        <activity android:name=".mvp.ui.activity.MainActivity"></activity>
         <activity android:name=".mvp.ui.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,6 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".mvp.ui.activity.RegisterActivity"></activity>
     </application>
 
 </manifest>

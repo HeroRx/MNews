@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_app"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/et_user_register"
+            style="@style/loginEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/account"
+            android:focusable="auto"
+            android:hint="@string/user_hint"
+            tools:ignore="RtlCompat" />
+        <View
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
+            android:background="@color/white_d_d"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"/>
+        <EditText
+            android:id="@+id/et_phone_register"
+            style="@style/loginEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/account"
+            android:focusable="auto"
+            android:hint="@string/user_register_hint"
+            tools:ignore="RtlCompat" />
+
+        <View
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
+            android:background="@color/white_d_d"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"/>
+        <EditText
+            android:id="@+id/et_psw_register"
+            style="@style/loginEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/identify"
+            android:focusable="auto"
+            android:hint="@string/password_hint"
+            tools:ignore="RtlCompat" />
+
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/login_btn_drawable"
+            android:text="@string/registering"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+
+
+</android.support.design.widget.CoordinatorLayout>
