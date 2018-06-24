@@ -83,18 +83,22 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @OnClick(R.id.tv_register)
     void register(){
-        Toast.makeText(LoginActivity.this, "注册", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(LoginActivity.this, "注册", Toast.LENGTH_SHORT).show();
         ArmsUtils.startActivity(RegisterActivity.class);
     }
     @OnClick(R.id.btn_login)
     void login(){
         String username = usernameEt.getText().toString().trim();
         String password = passwordEt.getText().toString().trim();
+        //TODO 使用MD5登录
         String md5 = EncryptUtils.encryptMD5ToString(password);
-        mPresenter.login(username, md5);
+        mPresenter.login(username, password);
     }
 
-
+    @OnClick(R.id.tv_forget_psw)
+    void reset(){
+        ArmsUtils.startActivity(ResetPsswordActivity.class);
+    }
     @Override
     public void loginFailed() {
         Toast.makeText(LoginActivity.this, "用户名或者密码错误", Toast.LENGTH_SHORT).show();

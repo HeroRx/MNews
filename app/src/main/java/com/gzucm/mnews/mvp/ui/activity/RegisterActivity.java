@@ -32,8 +32,8 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     EditText usernameEt;
     @BindView(R.id.et_psw_register)
     EditText passwordEt;
-    @BindView(R.id.et_phone_register)
-    EditText phoneEt;
+    @BindView(R.id.et_email_register)
+    EditText emailEt;
 
     User user = null;
     @Override
@@ -87,10 +87,11 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     void register(){
         String username = usernameEt.getText().toString().trim();
         String password = passwordEt.getText().toString().trim();
-        String phone = phoneEt.getText().toString().trim();
+        String email = emailEt.getText().toString().trim();
+        //TODO 使用MD5密码注册
         String md5 = EncryptUtils.encryptMD5ToString(password);
-        if (RegexUtils.isMobileExact(phone)){
-            user = new User(username,md5,phone);
+        if (RegexUtils.isEmail(email)){
+            user = new User(username,password,email);
             mPresenter.register(user);
         }else {
             Toast.makeText(RegisterActivity.this, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();

@@ -29,49 +29,35 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/et_user_register"
+            android:id="@+id/et_email_reset"
             style="@style/loginEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/account"
             android:focusable="auto"
-            android:hint="@string/user_register_hint"
-            tools:ignore="RtlCompat" />
-        <View
-            android:layout_marginEnd="50dp"
-            android:layout_marginStart="50dp"
-            android:background="@color/white_d_d"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"/>
-        <EditText
-            android:id="@+id/et_email_register"
-            style="@style/loginEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/account"
-            android:focusable="auto"
-            android:hint="@string/email_register_hint"
+            android:hint="@string/email_hint"
             tools:ignore="RtlCompat" />
 
-        <View
-            android:layout_marginEnd="50dp"
-            android:layout_marginStart="50dp"
-            android:background="@color/white_d_d"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"/>
-        <EditText
-            android:id="@+id/et_psw_register"
-            style="@style/loginEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/identify"
-            android:focusable="auto"
-            android:hint="@string/password_hint"
-            tools:ignore="RtlCompat" />
+
+        <!--<View-->
+            <!--android:layout_marginEnd="50dp"-->
+            <!--android:layout_marginStart="50dp"-->
+            <!--android:background="@color/white_d_d"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0.5dp"/>-->
+        <!--<EditText-->
+            <!--android:id="@+id/et_psw_reset"-->
+            <!--style="@style/loginEditText"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:drawableStart="@drawable/identify"-->
+            <!--android:focusable="auto"-->
+            <!--android:hint="@string/new_password_hint"-->
+            <!--tools:ignore="RtlCompat" />-->
 
 
         <Button
-            android:id="@+id/btn_register"
+            android:id="@+id/btn_reset"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginBottom="20dp"
@@ -79,7 +65,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/login_btn_drawable"
-            android:text="@string/registering"
+            android:text="@string/reset"
             android:textColor="@color/white" />
     </LinearLayout>
 

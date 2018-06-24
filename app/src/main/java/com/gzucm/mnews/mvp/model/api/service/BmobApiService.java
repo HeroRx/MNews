@@ -65,12 +65,12 @@ public interface BmobApiService {
     Observable<UserEntity> modifyAccount(@Header("X-Bmob-Session-Token") String token,@Path("id") String id,@Body User user);
 
     @Headers({"X-Bmob-Application-Id:9c187271e2c2908a1281d35d99466c65", "X-Bmob-REST-API-Key:748f8c15e0a9c4767ab3bbadda223f65", "Content-Type:application/json"})
-    @PUT("https://api.bmob.cn/1/users/{id}")
+    @PUT("users/{id}")
     Observable<UserEntity> resetPasswordByOld(@Header("X-Bmob-Session-Token") String token,@Path("id") String id,@Field("oldPassword") String oldPassword, @Field("newPassword") String newPassword);
 
-//    @Headers({"X-Bmob-Application-Id:9c187271e2c2908a1281d35d99466c65", "X-Bmob-REST-API-Key:748f8c15e0a9c4767ab3bbadda223f65", "Content-Type:application/json"})
-//    @PUT("https://api.bmob.cn/1/users/{id}")
-//    Observable<UserEntity> resetPasswordBySMSCode(@Header("X-Bmob-Session-Token") String token,@Path("id") String id,@Field("oldPassword") String oldPassword, @Field("newPassword") String newPassword);
+    @Headers({"X-Bmob-Application-Id:9c187271e2c2908a1281d35d99466c65", "X-Bmob-REST-API-Key:748f8c15e0a9c4767ab3bbadda223f65", "Content-Type:application/json"})
+    @POST("requestPasswordReset")
+    Observable<UserEntity> resetPasswordByEmailed(@Body User user);
 
     @Headers({"X-Bmob-Application-Id:9c187271e2c2908a1281d35d99466c65", "X-Bmob-REST-API-Key:748f8c15e0a9c4767ab3bbadda223f65"})
     @DELETE("https://api.bmob.cn/1/users/{id}")
