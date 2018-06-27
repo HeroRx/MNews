@@ -6,25 +6,33 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jess.arms.base.BaseFragment;
-import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.utils.ArmsUtils;
-
+import com.gzucm.mnews.R;
 import com.gzucm.mnews.di.component.DaggerNewsComponent;
 import com.gzucm.mnews.di.module.NewsModule;
 import com.gzucm.mnews.mvp.contract.NewsContract;
 import com.gzucm.mnews.mvp.presenter.NewsPresenter;
+import com.jess.arms.base.BaseFragment;
+import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.ArmsUtils;
 
-import com.gzucm.mnews.R;
+import butterknife.BindView;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsContract.View {
+
+    @BindView(R.id.sr_news)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.rv_news)
+    RecyclerView mRecycleView;
 
     public static NewsFragment newInstance() {
         NewsFragment fragment = new NewsFragment();
@@ -43,12 +51,15 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsCon
 
     @Override
     public View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //初始化刷新控件
+//        initSwipeRefreshLayout();
         return inflater.inflate(R.layout.fragment_news, container, false);
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
+        Log.i("MNews--",""+ "获取数据");
+        mPresenter.getlatestNews();
     }
 
     /**
@@ -116,6 +127,24 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsCon
 
     @Override
     public void killMyself() {
+
+    }
+
+    /**
+     * 初始化SwipeRefreshLayout
+     */
+    public void initSwipeRefreshLayout() {
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.blue_pressed);
+        //设置初次进入刷新
+        mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(true));
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+
+
+        });
+    }
+
+    @Override
+    public void showlatestNews() {
 
     }
 }

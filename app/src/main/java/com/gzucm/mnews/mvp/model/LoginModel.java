@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.google.gson.Gson;
 import com.gzucm.mnews.mvp.contract.LoginContract;
+import com.gzucm.mnews.mvp.model.api.Api;
 import com.gzucm.mnews.mvp.model.api.service.BmobApiService;
 import com.gzucm.mnews.mvp.model.entity.UserEntity;
 import com.jess.arms.di.scope.ActivityScope;
@@ -13,6 +14,7 @@ import com.jess.arms.mvp.BaseModel;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 
 
 @ActivityScope
@@ -25,6 +27,7 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
     @Inject
     public LoginModel(IRepositoryManager repositoryManager) {
         super(repositoryManager);
+        RetrofitUrlManager.getInstance().putDomain("bmob", Api.Bmob_DOMAIN);
     }
 
     @Override

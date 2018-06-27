@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import com.gzucm.mnews.app.configuration.RetrofitBaseUrlConfiguration;
 import com.jess.arms.base.App;
 import com.jess.arms.base.delegate.AppLifecycles;
 import com.jess.arms.di.module.GlobalConfigModule;
@@ -26,8 +27,11 @@ public class GlobalConfiguration implements ConfigModule {
     @Override
     public void applyOptions(Context context, GlobalConfigModule.Builder builder) {
         //使用builder可以为框架配置一些配置信息
-        builder.baseurl("https://api.bmob.cn/1/");
+//        builder.baseurl("https://api.bmob.cn/1/");
 //        builder.baseurl(Api.APP_DOMAIN);
+//         builder.retrofitConfiguration(new MyRetrofitConfiguration());
+
+        builder.retrofitConfiguration(new RetrofitBaseUrlConfiguration()).build();
     }
 
     @Override

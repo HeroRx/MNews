@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.google.gson.Gson;
 import com.gzucm.mnews.mvp.contract.RegisterContract;
+import com.gzucm.mnews.mvp.model.api.Api;
 import com.gzucm.mnews.mvp.model.api.service.BmobApiService;
 import com.gzucm.mnews.mvp.model.entity.BmobEntity.User;
 import com.gzucm.mnews.mvp.model.entity.UserEntity;
@@ -14,6 +15,7 @@ import com.jess.arms.mvp.BaseModel;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 
 
 @ActivityScope
@@ -26,6 +28,7 @@ public class RegisterModel extends BaseModel implements RegisterContract.Model {
     @Inject
     public RegisterModel(IRepositoryManager repositoryManager) {
         super(repositoryManager);
+        RetrofitUrlManager.getInstance().putDomain("bmob", Api.Bmob_DOMAIN);
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -109,5 +110,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     public void loginSuccess() {
 
         Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        finish();
+        return super.onKeyDown(keyCode, event);
     }
 }
