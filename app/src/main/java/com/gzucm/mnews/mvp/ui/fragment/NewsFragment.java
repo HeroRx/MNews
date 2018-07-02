@@ -7,17 +7,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.gzucm.mnews.R;
 import com.gzucm.mnews.di.component.DaggerNewsComponent;
 import com.gzucm.mnews.di.module.NewsModule;
 import com.gzucm.mnews.mvp.contract.NewsContract;
 import com.gzucm.mnews.mvp.presenter.NewsPresenter;
+import com.gzucm.mnews.mvp.ui.adapter.DailyListAdapter;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -32,7 +35,9 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsCon
     @BindView(R.id.sr_news)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.rv_news)
-    RecyclerView mRecycleView;
+    RecyclerView mRecyclerView;
+
+
 
     public static NewsFragment newInstance() {
         NewsFragment fragment = new NewsFragment();
@@ -59,7 +64,11 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsCon
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         Log.i("MNews--",""+ "获取数据");
-        mPresenter.getlatestNews();
+//        mPresenter.merge("20180601");
+        mPresenter.getLatestData();
+//
+//        mPresenter.getBeforeNews("20180601");
+
     }
 
     /**
@@ -147,4 +156,20 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsCon
     public void showlatestNews() {
 
     }
+
+    @Override
+    public void setRecyclerAdapter(DailyListAdapter adapter) {
+
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+        View headerView = getLayoutInflater().inflate(R.layout.header_daily_list_hot, (ViewGroup) mRecyclerView.getParent(), false);
+        TextView textView = (TextView) headerView.findViewById(R.id.item_time);
+        textView.setText("今日热闻");
+
+        adapter.addHeaderView(headerView,1);
+        mRecyclerView.setAdapter(adapter);
+    }
+
+
 }

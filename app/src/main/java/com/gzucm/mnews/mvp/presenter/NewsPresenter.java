@@ -1,32 +1,39 @@
 package com.gzucm.mnews.mvp.presenter;
 
 import android.app.Application;
+import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gzucm.mnews.mvp.contract.NewsContract;
 import com.gzucm.mnews.mvp.model.entity.DailyEntity;
+import com.gzucm.mnews.mvp.model.entity.MultiEntity.DailyMultiItem;
+import com.gzucm.mnews.mvp.ui.adapter.DailyListAdapter;
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxLifecycleUtils;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-import okhttp3.ResponseBody;
-import retrofit2.HttpException;
+import me.jessyan.rxerrorhandler.handler.RetryWithDelay;
 
 
 @FragmentScope
-public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContract.View> {
+public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContract.View> implements BaseQuickAdapter.OnItemClickListener {
     @Inject
     RxErrorHandler mErrorHandler;
     @Inject
@@ -36,6 +43,10 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
     @Inject
     AppManager mAppManager;
 
+
+    private DailyListAdapter mAdapter;
+    private List<DailyMultiItem> dailyMultiItems;
+    DailyEntity mTodayDaily;
     @Inject
     public NewsPresenter(NewsContract.Model model, NewsContract.View rootView) {
         super(model, rootView);
@@ -50,10 +61,75 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
         this.mApplication = null;
     }
 
-    public void getlatestNews(){
+    public void getLatestData() {
         mModel.getlatestNews()
                 .subscribeOn(Schedulers.io())
-//                .retryWhen(new RetryWithDelay(3, 2))
+                .retryWhen(new RetryWithDelay(3, 2))
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
+                .flatMap(new Function<DailyEntity, ObservableSource<DailyEntity>>() {
+                    @Override
+                    public ObservableSource<DailyEntity> apply(DailyEntity dailyEntity) throws Exception {
+                        mTodayDaily = dailyEntity;
+                        String date = dailyEntity.getDate();
+                        getBeforeNews(date);
+                        return  mModel.getBeforeNews(date);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))//使用Rxlifecycle,使Disposable和Activity一起销毁
+                .subscribe(new ErrorHandleSubscriber<DailyEntity>(mErrorHandler) {
+                    @Override
+                    public void onNext(@NonNull DailyEntity dailyEntity) {
+                        List<DailyMultiItem> data = new ArrayList<>();
+                        if (dailyEntity != null) {
+                            data.addAll(mModel.parseBannerDailyEntityData(mTodayDaily));
+                            data.addAll(mModel.parseTodayDailyEntityData(mTodayDaily));
+                            data.addAll(mModel.parseBeforeDailyEntityData(dailyEntity));
+                        }
+
+                        setAdapter(data);
+
+                        Log.i("MNews--getBanner", "" + dailyEntity.getDate() + dailyEntity.getTop_stories());
+//                        ArmsUtils.startActivity(MainActivity.class);
+                    }
+
+                });
+    }
+
+    public void merge(String date) {
+        mModel.merge(date)
+                .subscribeOn(Schedulers.io())
+                .retryWhen(new RetryWithDelay(3, 2))
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))//使用Rxlifecycle,使Disposable和Activity一起销毁
+                .subscribe(new ErrorHandleSubscriber<DailyEntity>(mErrorHandler) {
+                    @Override
+                    public void onNext(@NonNull DailyEntity dailyEntity) {
+                        List<DailyMultiItem> data = new ArrayList<>();
+                        if (dailyEntity != null) {
+                            data.addAll(mModel.parseBannerDailyEntityData(dailyEntity));
+                            data.addAll(mModel.parseTodayDailyEntityData(dailyEntity));
+                            data.addAll(mModel.parseBeforeDailyEntityData(dailyEntity));
+                        }
+
+                        setAdapter(data);
+
+                        Log.i("MNews--", "" + dailyEntity.getDate() + dailyEntity.getStories() + dailyEntity.getTop_stories());
+//                        ArmsUtils.startActivity(MainActivity.class);
+                    }
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
+                });
+    }
+
+    public void getBeforeNews(String date) {
+        mModel.getBeforeNews(date)
+                .subscribeOn(Schedulers.io())
+                .retryWhen(new RetryWithDelay(3, 2))
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxLifecycleUtils.bindToLifecycle(mRootView))//使用Rxlifecycle,使Disposable和Activity一起销毁
@@ -62,30 +138,39 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
                     public void onNext(@NonNull DailyEntity dailyEntity) {
 
 
-                        Log.i("MNews--",""+ dailyEntity.getDate() + dailyEntity.getStories());
+//                        setAdapter(bdata);
+
+                        Log.i("MNews--", "" + dailyEntity.getDate() + dailyEntity.getStories() + dailyEntity.getTop_stories());
 //                        ArmsUtils.startActivity(MainActivity.class);
                     }
 
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
-                        //t里面携带异常的响应体
-                        if(t instanceof HttpException){
-                            ResponseBody body = ((HttpException) t).response().errorBody();
-                            try {
-                                String response = body.string();
-                                Gson gson = new Gson();
-                                DailyEntity dailyEntity = gson.fromJson(response,DailyEntity.class);
-//                                Log.i("MNews --",""+response);
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-//
-
                     }
                 });
     }
 
+    public void setAdapter(List<DailyMultiItem> data) {
+        if (mAdapter == null) {
+            mAdapter = new DailyListAdapter(data);
+            mAdapter.setSpanSizeLookup(new BaseQuickAdapter.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(GridLayoutManager gridLayoutManager, int position) {
+
+                    return data.get(position).getSpanSize();
+
+                }
+            });
+            mRootView.setRecyclerAdapter(mAdapter);
+            mAdapter.setOnItemClickListener(this);
+        } else {
+            mAdapter.setNewData(data);
+        }
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Toast.makeText(mApplication, "" + position, Toast.LENGTH_SHORT).show();
+    }
 }
