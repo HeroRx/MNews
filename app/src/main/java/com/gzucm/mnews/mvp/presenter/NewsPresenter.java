@@ -45,8 +45,9 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
 
 
     private DailyListAdapter mAdapter;
-    private List<DailyMultiItem> dailyMultiItems;
-    DailyEntity mTodayDaily;
+    private List<DailyMultiItem> data = new ArrayList<>();
+    private DailyEntity mTodayDaily;
+    private String mCurrentDate;
     @Inject
     public NewsPresenter(NewsContract.Model model, NewsContract.View rootView) {
         super(model, rootView);
@@ -71,9 +72,9 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
                     @Override
                     public ObservableSource<DailyEntity> apply(DailyEntity dailyEntity) throws Exception {
                         mTodayDaily = dailyEntity;
-                        String date = dailyEntity.getDate();
-                        getBeforeNews(date);
-                        return  mModel.getBeforeNews(date);
+                        mCurrentDate = dailyEntity.getDate();
+                        getBeforeNews(mCurrentDate);
+                        return  mModel.getBeforeNews(mCurrentDate);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -81,7 +82,7 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
                 .subscribe(new ErrorHandleSubscriber<DailyEntity>(mErrorHandler) {
                     @Override
                     public void onNext(@NonNull DailyEntity dailyEntity) {
-                        List<DailyMultiItem> data = new ArrayList<>();
+
                         if (dailyEntity != null) {
                             data.addAll(mModel.parseBannerDailyEntityData(mTodayDaily));
                             data.addAll(mModel.parseTodayDailyEntityData(mTodayDaily));
@@ -97,33 +98,9 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
                 });
     }
 
-    public void merge(String date) {
-        mModel.merge(date)
-                .subscribeOn(Schedulers.io())
-                .retryWhen(new RetryWithDelay(3, 2))
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))//使用Rxlifecycle,使Disposable和Activity一起销毁
-                .subscribe(new ErrorHandleSubscriber<DailyEntity>(mErrorHandler) {
-                    @Override
-                    public void onNext(@NonNull DailyEntity dailyEntity) {
-                        List<DailyMultiItem> data = new ArrayList<>();
-                        if (dailyEntity != null) {
-                            data.addAll(mModel.parseBannerDailyEntityData(dailyEntity));
-                            data.addAll(mModel.parseTodayDailyEntityData(dailyEntity));
-                            data.addAll(mModel.parseBeforeDailyEntityData(dailyEntity));
-                        }
 
-                        setAdapter(data);
-
-                        Log.i("MNews--", "" + dailyEntity.getDate() + dailyEntity.getStories() + dailyEntity.getTop_stories());
-//                        ArmsUtils.startActivity(MainActivity.class);
-                    }
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
-                });
+    public void cleanData(){
+        data.clear();
     }
 
     public void getBeforeNews(String date) {
@@ -139,9 +116,39 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
 
 
 //                        setAdapter(bdata);
-
+                        mCurrentDate = dailyEntity.getDate();
                         Log.i("MNews--", "" + dailyEntity.getDate() + dailyEntity.getStories() + dailyEntity.getTop_stories());
 //                        ArmsUtils.startActivity(MainActivity.class);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
+                });
+    }
+
+    public void getBeforeLoadMoreNews() {
+        mModel.getBeforeLoadMoreNews(mCurrentDate)
+                .subscribeOn(Schedulers.io())
+                .retryWhen(new RetryWithDelay(3, 2))
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))//使用Rxlifecycle,使Disposable和Activity一起销毁
+                .subscribe(new ErrorHandleSubscriber<DailyEntity>(mErrorHandler) {
+                    @Override
+                    public void onNext(@NonNull DailyEntity dailyEntity) {
+
+
+//                        setAdapter(bdata);
+                        mCurrentDate = dailyEntity.getDate();
+                        Log.i("MNews--", "" + dailyEntity.getDate() + dailyEntity.getStories() + dailyEntity.getTop_stories());
+//                        ArmsUtils.startActivity(MainActivity.class);
+                        if (dailyEntity != null) {
+                            data.addAll(mModel.parseBeforeDailyEntityData(dailyEntity));
+                        }
+                        Log.i("MNews--当前的日期",mCurrentDate);
+                        setAdapter(data);
                     }
 
                     @Override
@@ -173,4 +180,6 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Toast.makeText(mApplication, "" + position, Toast.LENGTH_SHORT).show();
     }
+
+
 }

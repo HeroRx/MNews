@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 
 import com.blankj.utilcode.util.FragmentUtils;
 import com.gzucm.mnews.R;
@@ -42,6 +43,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private List<Integer> mTitles;
     private List<Fragment> mFragments;
     private List<Integer> mNavIds;
+
+    //上次按下返回键的系统时间
+    private long lastBackTime = 0;
+    //当前按下返回键的系统时间
+    private long currentBackTime = 0;
 
     private OnTabSelectListener mOnTabSelectListener = tabId -> {
 
@@ -165,5 +171,24 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         this.mTitles = null;
         this.mFragments = null;
         this.mNavIds = null;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        //捕获返回键按下的事件
+//        if(keyCode == KeyEvent.KEYCODE_BACK){
+//            //获取当前系统时间的毫秒数
+//            currentBackTime = System.currentTimeMillis();
+//            //比较上次按下返回键和当前按下返回键的时间差，如果大于2秒，则提示再按一次退出
+//            if(currentBackTime - lastBackTime > 2 * 1000){
+//                Toast.makeText(this, "再按一次返回键退出", Toast.LENGTH_SHORT).show();
+//                lastBackTime = currentBackTime;
+//            }else{ //如果两次按下的时间差小于2秒，则退出程序
+//                finish();
+//            }
+//            return true;
+//        }
+        finish();
+        return super.onKeyDown(keyCode, event);
     }
 }

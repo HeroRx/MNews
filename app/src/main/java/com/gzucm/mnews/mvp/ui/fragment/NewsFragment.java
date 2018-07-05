@@ -6,7 +6,6 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,6 +23,9 @@ import com.gzucm.mnews.mvp.ui.adapter.DailyListAdapter;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
 
@@ -33,7 +35,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsContract.View {
 
     @BindView(R.id.sr_news)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    RefreshLayout mSmartRefreshLayout;
     @BindView(R.id.rv_news)
     RecyclerView mRecyclerView;
 
@@ -56,19 +58,41 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsCon
 
     @Override
     public View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //初始化刷新控件
-//        initSwipeRefreshLayout();
+
         return inflater.inflate(R.layout.fragment_news, container, false);
+    }
+
+    private void initSmartRefreshLayout() {
+        mSmartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mPresenter.cleanData();
+                mPresenter.getLatestData();
+                mSmartRefreshLayout.finishRefresh(1200);
+            }
+        });
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         Log.i("MNews--",""+ "获取数据");
-//        mPresenter.merge("20180601");
-        mPresenter.getLatestData();
-//
-//        mPresenter.getBeforeNews("20180601");
 
+        mPresenter.getLatestData();
+
+        initSmartRefreshLayout();
+        initLoadMore();
+
+    }
+
+    private void initLoadMore() {
+
+        mSmartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                mPresenter.getBeforeLoadMoreNews();
+                mSmartRefreshLayout.finishLoadMore(1200);
+            }
+        });
     }
 
     /**
@@ -114,12 +138,13 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsCon
 
     @Override
     public void showLoading() {
-
+        mSmartRefreshLayout.autoRefresh();
     }
 
     @Override
     public void hideLoading() {
 
+        mSmartRefreshLayout.finishRefresh(1200);
     }
 
     @Override
@@ -138,25 +163,7 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsCon
     public void killMyself() {
 
     }
-
-    /**
-     * 初始化SwipeRefreshLayout
-     */
-    public void initSwipeRefreshLayout() {
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.blue_pressed);
-        //设置初次进入刷新
-        mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(true));
-        mSwipeRefreshLayout.setOnRefreshListener(() -> {
-
-
-        });
-    }
-
-    @Override
-    public void showlatestNews() {
-
-    }
-
+    
     @Override
     public void setRecyclerAdapter(DailyListAdapter adapter) {
 
@@ -170,6 +177,8 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsCon
         adapter.addHeaderView(headerView,1);
         mRecyclerView.setAdapter(adapter);
     }
+
+
 
 
 }

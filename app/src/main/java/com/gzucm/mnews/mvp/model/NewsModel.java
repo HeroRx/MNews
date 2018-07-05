@@ -55,9 +55,11 @@ public class NewsModel extends BaseModel implements NewsContract.Model {
     }
 
     @Override
-    public Observable<DailyEntity> merge(String date) {
-        return Observable.merge(getlatestNews(),getBeforeNews(date));
+    public Observable<DailyEntity> getBeforeLoadMoreNews(String date) {
+        return mRepositoryManager.obtainRetrofitService(ApiService.class)
+                .getBeforeNews(date);
     }
+
 
     @Override
     public List<DailyMultiItem> parseTodayDailyEntityData(DailyEntity getAllListData) {

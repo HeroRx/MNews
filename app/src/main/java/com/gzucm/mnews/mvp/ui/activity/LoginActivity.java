@@ -74,6 +74,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     public void launchActivity(@NonNull Intent intent) {
         checkNotNull(intent);
+
         ArmsUtils.startActivity(intent);
     }
 
@@ -86,6 +87,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     void register(){
 //        Toast.makeText(LoginActivity.this, "注册", Toast.LENGTH_SHORT).show();
         ArmsUtils.startActivity(RegisterActivity.class);
+        finish();
     }
     @OnClick(R.id.btn_login)
     void login(){
@@ -94,11 +96,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         //TODO 使用MD5登录
         String md5 = EncryptUtils.encryptMD5ToString(password);
         mPresenter.login(username, password);
+
     }
 
     @OnClick(R.id.tv_forget_psw)
     void reset(){
         ArmsUtils.startActivity(ResetPsswordActivity.class);
+
     }
     @Override
     public void loginFailed() {
@@ -117,4 +121,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         finish();
         return super.onKeyDown(keyCode, event);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
 }

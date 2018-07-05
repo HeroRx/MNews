@@ -14,7 +14,7 @@ import io.reactivex.Observable;
 public interface NewsContract {
     //对于经常使用的关于UI的方法可以定义到IView中,如显示隐藏进度条,和显示文字消息
     interface View extends IView {
-        void showlatestNews();
+        //获取数据并设置adapter
         void setRecyclerAdapter(DailyListAdapter adapter);
     }
 
@@ -22,8 +22,7 @@ public interface NewsContract {
     interface Model extends IModel {
         Observable<DailyEntity> getlatestNews();
         Observable<DailyEntity> getBeforeNews(String date);
-        Observable<DailyEntity> merge(String date);
-
+        Observable<DailyEntity> getBeforeLoadMoreNews(String date);
         List<DailyMultiItem> parseTodayDailyEntityData(DailyEntity getAllListData);
         List<DailyMultiItem> parseBannerDailyEntityData(DailyEntity getAllListData);
         List<DailyMultiItem> parseBeforeDailyEntityData(DailyEntity getAllListData);
