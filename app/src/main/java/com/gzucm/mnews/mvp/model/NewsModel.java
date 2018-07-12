@@ -81,6 +81,7 @@ public class NewsModel extends BaseModel implements NewsContract.Model {
                     item.setMultipic(storiesBean.isMultipic());
                     item.setType(storiesBean.getType());
                     item.setImages(storiesBean.getImages());
+                    item.setId(storiesBean.getId());
                     data.add(item);
                 }
             }
@@ -100,7 +101,7 @@ public class NewsModel extends BaseModel implements NewsContract.Model {
                 DailyMultiItem item = new DailyMultiItem();
                 topStoriesBean = topStoriesBeans.get(i);
                 item.setItemType(DailyMultiItem.ITEM_Banner);
-
+                item.setId(topStoriesBean.getId());
                 item.setTitle(topStoriesBean.getTitle());
                 item.setGa_prefix(topStoriesBean.getGa_prefix());
                 item.setType(topStoriesBean.getType());
@@ -127,7 +128,7 @@ public class NewsModel extends BaseModel implements NewsContract.Model {
                     DailyMultiItem item = new DailyMultiItem();
                     storiesBean = storiesBeans.get(i);
                     item.setItemType(DailyMultiItem.ITEM_BEFORE);
-
+                    item.setId(storiesBean.getId());
                     item.setTitle(storiesBean.getTitle());
                     item.setGa_prefix(storiesBean.getGa_prefix());
                     item.setMultipic(storiesBean.isMultipic());

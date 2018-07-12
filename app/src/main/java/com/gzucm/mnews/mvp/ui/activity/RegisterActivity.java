@@ -90,11 +90,13 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
         String email = emailEt.getText().toString().trim();
         //TODO 使用MD5密码注册
         String md5 = EncryptUtils.encryptMD5ToString(password);
+
+
         if (RegexUtils.isEmail(email)){
             user = new User(username,password,email);
             mPresenter.register(user);
         }else {
-            Toast.makeText(RegisterActivity.this, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegisterActivity.this, "邮箱格式错误", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -114,6 +116,11 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     @Override
     public void registerFaildeByPhoneExist() {
         Toast.makeText(RegisterActivity.this, "手机号已经被注册", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void registerFaildeByEmailExist() {
+        Toast.makeText(RegisterActivity.this, "邮箱已经被注册", Toast.LENGTH_SHORT).show();
     }
 
     @Override

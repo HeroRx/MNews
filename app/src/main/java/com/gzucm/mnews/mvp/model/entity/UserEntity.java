@@ -1,5 +1,9 @@
 package com.gzucm.mnews.mvp.model.entity;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
  * Created on 2018/6/23 0023 0:15.
  *
@@ -40,6 +44,12 @@ public class UserEntity{
     private String updatedAt;
 
     private String status;
+
+    /**
+     * 查询所有用户
+     */
+    private List<ResultsBean> results;
+
 
     public String getStatus() {
         return status;
@@ -119,5 +129,94 @@ public class UserEntity{
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<ResultsBean> getResults() {
+        return results;
+    }
+
+    public void setResults(List<ResultsBean> results) {
+        this.results = results;
+    }
+
+    public static class ResultsBean {
+        /**
+         * createdAt : 2018-06-24 14:44:30
+         * email : 1456807058@qq.com
+         * emailVerified : false
+         * mobilePhoneNumber : 13226626022
+         * objectId : 9a47058c72
+         * updatedAt : 2018-06-27 10:44:10
+         * username : hrx
+         */
+
+        @SerializedName("createdAt")
+        private String createdAtX;
+        private String email;
+        private boolean emailVerified;
+        @SerializedName("mobilePhoneNumber")
+        private String mobilePhoneNumberX;
+        @SerializedName("objectId")
+        private String objectIdX;
+        @SerializedName("updatedAt")
+        private String updatedAtX;
+        @SerializedName("username")
+        private String usernameX;
+
+        public String getCreatedAtX() {
+            return createdAtX;
+        }
+
+        public void setCreatedAtX(String createdAtX) {
+            this.createdAtX = createdAtX;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public boolean isEmailVerified() {
+            return emailVerified;
+        }
+
+        public void setEmailVerified(boolean emailVerified) {
+            this.emailVerified = emailVerified;
+        }
+
+        public String getMobilePhoneNumberX() {
+            return mobilePhoneNumberX;
+        }
+
+        public void setMobilePhoneNumberX(String mobilePhoneNumberX) {
+            this.mobilePhoneNumberX = mobilePhoneNumberX;
+        }
+
+        public String getObjectIdX() {
+            return objectIdX;
+        }
+
+        public void setObjectIdX(String objectIdX) {
+            this.objectIdX = objectIdX;
+        }
+
+        public String getUpdatedAtX() {
+            return updatedAtX;
+        }
+
+        public void setUpdatedAtX(String updatedAtX) {
+            this.updatedAtX = updatedAtX;
+        }
+
+        public String getUsernameX() {
+            return usernameX;
+        }
+
+        public void setUsernameX(String usernameX) {
+            this.usernameX = usernameX;
+        }
     }
 }

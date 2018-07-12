@@ -16,6 +16,7 @@ public interface NewsContract {
     interface View extends IView {
         //获取数据并设置adapter
         void setRecyclerAdapter(DailyListAdapter adapter);
+
     }
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存

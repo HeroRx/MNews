@@ -1,20 +1,24 @@
 package com.gzucm.mnews.mvp.presenter;
 
 import android.app.Application;
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gzucm.mnews.app.configuration.AppConstant;
 import com.gzucm.mnews.mvp.contract.NewsContract;
 import com.gzucm.mnews.mvp.model.entity.DailyEntity;
 import com.gzucm.mnews.mvp.model.entity.MultiEntity.DailyMultiItem;
+import com.gzucm.mnews.mvp.ui.activity.DailyDetailActivity;
 import com.gzucm.mnews.mvp.ui.adapter.DailyListAdapter;
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.RxLifecycleUtils;
 
 import java.util.ArrayList;
@@ -48,6 +52,19 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
     private List<DailyMultiItem> data = new ArrayList<>();
     private DailyEntity mTodayDaily;
     private String mCurrentDate;
+    private int mNewId;
+
+    //通过接口也可以拿到这个ID,但是通过DailyDetaileActivity实现NewsPresenter里面的接口就很奇怪
+//    public interface FragmentInteraction{
+//        void process(int id);
+//    }
+//    FragmentInteraction listener = new FragmentInteraction() {
+//        @Override
+//        public void process(int id) {
+//            id = mNewId;
+//        }
+//    };
+
     @Inject
     public NewsPresenter(NewsContract.Model model, NewsContract.View rootView) {
         super(model, rootView);
@@ -60,6 +77,7 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+
     }
 
     public void getLatestData() {
@@ -158,6 +176,8 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
                 });
     }
 
+
+
     public void setAdapter(List<DailyMultiItem> data) {
         if (mAdapter == null) {
             mAdapter = new DailyListAdapter(data);
@@ -179,7 +199,12 @@ public class NewsPresenter extends BasePresenter<NewsContract.Model, NewsContrac
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Toast.makeText(mApplication, "" + position, Toast.LENGTH_SHORT).show();
+        DailyMultiItem dailyMultiItem = data.get(position);
+        mNewId = dailyMultiItem.getId();
+        Intent intent = new Intent(mApplication,DailyDetailActivity.class);
+        Toast.makeText(mApplication,""+mNewId,Toast.LENGTH_SHORT).show();
+        intent.putExtra(AppConstant.NEW_ID,mNewId);
+        ArmsUtils.startActivity(intent);
     }
-
 
 }

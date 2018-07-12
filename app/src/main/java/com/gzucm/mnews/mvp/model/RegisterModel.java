@@ -49,4 +49,10 @@ public class RegisterModel extends BaseModel implements RegisterContract.Model {
         return mRepositoryManager.obtainRetrofitService(BmobApiService.class)
                 .loginByAccount(username, password);
     }
+
+    @Override
+    public Observable<UserEntity> getAllAccounts() {
+        return mRepositoryManager.obtainRetrofitService(BmobApiService.class)
+                .getAllAccounts();
+    }
 }

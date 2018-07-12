@@ -27,13 +27,14 @@ public interface ApiService {
     /**
      * 获取最新的日报数据
      */
-    @Headers({"Domain-Name: zhihu"})
+    @Headers({"Domain-Name:zhihu"})
     @GET("news/latest")
+
     Observable<DailyEntity> getlatestNews();
     /**
      * 根据时间获取对应的日报数据
      */
-    @Headers({"Domain-Name: zhihu"})
+    @Headers({"Domain-Name:zhihu"})
     @GET("news/before/{date}")
     Observable<DailyEntity> getBeforeNews(@Path("date") String date);
     /**

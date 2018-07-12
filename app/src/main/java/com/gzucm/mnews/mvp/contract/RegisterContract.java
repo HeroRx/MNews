@@ -14,6 +14,7 @@ public interface RegisterContract {
         void registerFailedByAccountExist();
         void registerSuccess();
         void registerFaildeByPhoneExist();
+        void registerFaildeByEmailExist();
         void autoLoginFailed();
         void autoLoginSuccess();
     }
@@ -22,5 +23,6 @@ public interface RegisterContract {
     interface Model extends IModel {
         Observable<UserEntity> registerByAccount(User user);
         Observable<UserEntity> autologinByAccount(String username, String password);
+        Observable<UserEntity> getAllAccounts();
     }
 }

@@ -32,7 +32,7 @@ import butterknife.BindView;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsContract.View {
+public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsContract.View{
 
     @BindView(R.id.sr_news)
     RefreshLayout mSmartRefreshLayout;
@@ -133,7 +133,6 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsCon
      */
     @Override
     public void setData(@Nullable Object data) {
-
     }
 
     @Override
@@ -176,8 +175,8 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsCon
 
         adapter.addHeaderView(headerView,1);
         mRecyclerView.setAdapter(adapter);
-    }
 
+    }
 
 
 

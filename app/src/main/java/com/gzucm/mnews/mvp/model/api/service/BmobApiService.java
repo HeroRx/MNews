@@ -75,4 +75,8 @@ public interface BmobApiService {
     @Headers({"X-Bmob-Application-Id:9c187271e2c2908a1281d35d99466c65", "X-Bmob-REST-API-Key:748f8c15e0a9c4767ab3bbadda223f65"})
     @DELETE("https://api.bmob.cn/1/users/{id}")
     Observable<UserEntity> deleteAccount(@Header("X-Bmob-Session-Token") String token,@Path("id") String id);
+
+    @Headers({"Domain-Name: bmob","X-Bmob-Application-Id:9c187271e2c2908a1281d35d99466c65", "X-Bmob-REST-API-Key:748f8c15e0a9c4767ab3bbadda223f65", "Content-Type:application/json"})
+    @GET("users")
+    Observable<UserEntity> getAllAccounts();
 }

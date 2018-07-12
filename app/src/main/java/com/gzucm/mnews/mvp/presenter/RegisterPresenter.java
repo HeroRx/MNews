@@ -16,11 +16,14 @@ import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.RxLifecycleUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
@@ -40,6 +43,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.Model, Reg
     AppManager mAppManager;
 
     private UserEntity mUserEntity;
+    private boolean isUsernameCanUse;
     @Inject
     public RegisterPresenter(RegisterContract.Model model, RegisterContract.View rootView) {
         super(model, rootView);
@@ -89,6 +93,8 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.Model, Reg
                                     mRootView.registerFailedByAccountExist();
                                 }else if (userEntity.getCode() == 209){
                                     mRootView.registerFaildeByPhoneExist();
+                                }else if (userEntity.getCode() == 203){
+                                    mRootView.registerFaildeByEmailExist();
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -136,5 +142,28 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.Model, Reg
                         }
                     }
                 });
+    }
+
+    public boolean getAllAccounts(String email){
+
+        mModel.getAllAccounts()
+                .all(new Predicate<UserEntity>() {
+                    @Override
+                    public boolean test(UserEntity userEntity) throws Exception {
+                        List<UserEntity.ResultsBean> resultsBeans = userEntity.getResults();
+                        return resultsBeans.equals(email);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        isUsernameCanUse = aBoolean;
+                    }
+                });
+        return isUsernameCanUse;
     }
 }

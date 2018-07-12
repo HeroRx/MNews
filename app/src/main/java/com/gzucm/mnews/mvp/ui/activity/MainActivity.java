@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.FragmentUtils;
 import com.gzucm.mnews.R;
@@ -66,8 +67,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 break;
         }
 
-        FragmentUtils.showHide(mReplace,mFragments);
+        FragmentUtils.showHide(mReplace, mFragments);
     };
+
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
         DaggerMainComponent //如找不到该类,请编译一下项目
@@ -175,20 +177,21 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        //捕获返回键按下的事件
-//        if(keyCode == KeyEvent.KEYCODE_BACK){
-//            //获取当前系统时间的毫秒数
-//            currentBackTime = System.currentTimeMillis();
-//            //比较上次按下返回键和当前按下返回键的时间差，如果大于2秒，则提示再按一次退出
-//            if(currentBackTime - lastBackTime > 2 * 1000){
-//                Toast.makeText(this, "再按一次返回键退出", Toast.LENGTH_SHORT).show();
-//                lastBackTime = currentBackTime;
-//            }else{ //如果两次按下的时间差小于2秒，则退出程序
-//                finish();
-//            }
-//            return true;
-//        }
-        finish();
+        //捕获返回键按下的事件
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //获取当前系统时间的毫秒数
+            currentBackTime = System.currentTimeMillis();
+            //比较上次按下返回键和当前按下返回键的时间差，如果大于2秒，则提示再按一次退出
+            if (currentBackTime - lastBackTime > 2 * 1000) {
+                Toast.makeText(this, "再按一次返回键退出", Toast.LENGTH_SHORT).show();
+                lastBackTime = currentBackTime;
+            } else { //如果两次按下的时间差小于2秒，则退出程序
+                ArmsUtils.exitApp();
+            }
+            return true;
+        }
         return super.onKeyDown(keyCode, event);
     }
+
+
 }
